@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 from .models import Student
 from django.contrib import messages
 from .forms import StudentForm
@@ -53,9 +54,15 @@ def import_csv(request):
         return redirect('/')
     
     return render(request,'csv.html')
-
-def export_csv(request):
-    pass
-
 def export_users_csv(request):
-    pass
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="users.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['name', 'age', 'email', 'password'])
+
+    users = Student.objects.all()
+    for user in users:
+        writer.writerow([user.name, user.age, user.email, user.password])
+
+    return response

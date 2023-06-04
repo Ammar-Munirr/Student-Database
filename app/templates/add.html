@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-4">
+        <h4 class='text-center alert alert-info'>Add New Record</h4>
+    <form method='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class='btn btn-success' value='Add'>
+    <a href="{% url 'csvfunc' %}" class='btn btn-info'>Import From CSV</a>
+    </form>
+    </div>
+    <div class="col-sm-8">
+        <h4 class='text-center alert alert-info'>Show DataBase</h4>
+        {% if students %}
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for data in students %}
+                    <tr>
+                        <th scope="row">{{data.id}}</th>
+                        <td>{{data.name}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{data.password}}</td>
+                        <td><a href="{% url 'edit' data.id %}" class='btn btn-warning btn-sm'>Edit</a>
+                        <a href="{% url 'delete' data.id %}" class='btn btn-danger btn-sm'>Delete</a></td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+               <a href="{% url 'export' %}" class='btn btn-secondary' download="users.csv">Export to CSV</a>
+        {% else %}
+        <h4 class='text-center alert alert-warning'>No Data Found</h4>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

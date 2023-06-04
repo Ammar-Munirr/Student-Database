@@ -1,0 +1,11 @@
+{% block content %}
+<form method='post' enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="formFileSm" class="form-label">Select your CSV File</label>
+        <input class="form-control form-control-sm" id="formFileSm" type="file" name="csv_file">
+      </div>
+    <br>
+    <input type="submit" class='btn btn-success' value='Add Records'>
+</form>
+{% endblock content %}
